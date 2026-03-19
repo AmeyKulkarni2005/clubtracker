@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ClubTracker</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-wrapper {
+            display: flex;
+            width: 95%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            overflow: hidden; /* Keeps the rounded corners clean */
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 20px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            border: none;
+            padding: 15px 25px;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-left: 4px solid #4CAF50; /* Green accent for active tab */
+            font-weight: bold;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            color: white;
+        }
+
+        .tab-content {
+            display: none; /* Hide all tabs by default */
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block; /* Only show the active one */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Reusing your form styles */
+        .input-group label { display: block; margin-bottom: 8px; }
+        select, input[type="date"], input[type="number"], input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%; padding: 12px 15px; border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.05);
+            color: white; margin-bottom: 20px;
+        }
+
+        select, input[type="date"], input[type="number"], input[type="text"], input[type="email"], input[type="password"], textarea {
+            /* ... existing styles ... */
+            width: 100%; padding: 12px 15px; border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.05);
+            color: white; margin-bottom: 20px; font-family: 'Inter', sans-serif;
+        }
+        textarea { resize: vertical; min-height: 80px; }
+
+
+        select option { color: black; }
+        .submit-btn { width: 100%; padding: 14px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+        
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 20px; }
+        .logout-btn { background: rgba(0,0,0,0.4); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        
+        <div class="sidebar">
+            <h2>Admin Panel</h2>
+            <button class="tab-btn active" onclick="openTab('tab-attendance', this)">Mark Attendance</button>
+            <button class="tab-btn" onclick="openTab('tab-activity', this)">Manage Activities</button>
+            <button class="tab-btn" onclick="openTab('tab-student', this)">Manage Students</button>
+            <button class="tab-btn" onclick="openTab('tab-events', this)">Major Events 📸</button>
+        </div>
+
+        <div class="main-content">
+            <div class="header-top">
+                <h1 id="pageTitle">Mark Attendance</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <div id="tab-attendance" class="tab-content active">
+                <form id="markAttendanceForm">
+                    <div class="input-group">
+                        <label>Select Student</label>
+                        <select id="studentSelect" required><option value="">Loading students...</option></select>
+                    </div>
+                    <div class="input-group">
+                        <label>Select Activity</label>
+                        <select id="activitySelect" required><option value="">Loading activities...</option></select>
+                    </div>
+                    <button type="submit" class="submit-btn" style="background: #4CAF50; color: white;">Mark as Present</button>
+                </form>
+            </div>
+
+            <div id="tab-activity" class="tab-content">
+                <form id="createActivityForm">
+                    <div class="input-group"><label>Activity Title</label><input type="text" id="title" required></div>
+                    <div class="input-group"><label>Description</label><input type="text" id="desc" required></div>
+                    
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <div class="input-group" style="flex: 1; min-width: 120px;">
+                            <label>Date</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 120px;">
+                            <label>Day</label>
+                            <input type="text" id="day" required placeholder="e.g. Wednesday">
+                        </div>
+                        <div class="input-group" style="flex: 1; min-width: 120px;">
+                            <label>Time</label>
+                            <input type="time" id="time" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Duration (Hours)</label>
+                        <input type="number" id="hours" required min="1" placeholder="e.g. 5">
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" style="background: white; color: #4364F7;">Add Activity</button>
+                </form>
+            </div>
+
+            <div id="tab-student" class="tab-content">
+                <form id="createStudentForm">
+                    <div class="input-group"><label>Student Name</label><input type="text" id="studentName" required></div>
+                    <div class="input-group"><label>College Email</label><input type="email" id="studentEmail" required></div>
+                    <div class="input-group"><label>Temporary Password</label><input type="password" id="studentPassword" required></div>
+                    <button type="submit" class="submit-btn" style="background: #FF9800; color: white;">Create Student Account</button>
+                </form>
+            </div>
+
+            <div id="tab-events" class="tab-content">
+                <form id="createMajorEventForm">
+                    <div class="input-group"><label>Event Name</label><input type="text" id="eventName" required placeholder="e.g. Firodia Karandak '26"></div>
+                    
+                    <div style="display: flex; gap: 15px;">
+                        <div class="input-group" style="flex: 1;"><label>Date</label><input type="date" id="eventDate" required></div>
+                        <div class="input-group" style="flex: 1;"><label>Day</label><input type="text" id="eventDay" required placeholder="e.g. Friday"></div>
+                    </div>
+
+                    <div class="input-group"><label>Venue</label><input type="text" id="eventVenue" required placeholder="e.g. Main Auditorium"></div>
+                    <div class="input-group">
+                        <label>Upload Event Photo</label>
+                        <input type="file" id="eventImage" accept="image/*" required style="padding: 8px;">
+                    </div>
+                    <div class="input-group"><label>Introduction</label><textarea id="eventIntro" required placeholder="Brief intro..."></textarea></div>
+                    <div class="input-group"><label>Description</label><textarea id="eventDesc" required placeholder="Full description..."></textarea></div>
+                    <div class="input-group"><label>Key Takeaways</label><textarea id="eventTakeaways" required placeholder="What did students learn?"></textarea></div>
+                    <div class="input-group"><label>List of Sub-Events</label><textarea id="eventSubEvents" required placeholder="e.g. 1. Singing, 2. Drama, 3. Dance"></textarea></div>
+                    
+                    <button type="submit" class="submit-btn" style="background: #E91E63; color: white;">Publish Major Event</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

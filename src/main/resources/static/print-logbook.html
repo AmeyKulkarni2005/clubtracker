@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Activity Logbook</title>
+    <style>
+        /* Base page styling */
+        body {
+            background: #525659; /* Dark background like a PDF viewer */
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            font-family: "Times New Roman", Times, serif;
+            margin: 0;
+        }
+        .page {
+            background: white;
+            width: 210mm;
+            min-height: 297mm; /* Standard A4 size */
+            padding: 20mm 25mm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Top Header Box */
+        .header-box {
+            border: 1px solid black;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .logo-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            margin-right: 15px;
+        }
+        .header-text {
+            text-align: center;
+            flex-grow: 1;
+        }
+        .header-text h1 { font-size: 13pt; margin: 0 0 5px 0; font-weight: bold; }
+        .header-text p { font-size: 10pt; margin: 0; }
+
+        /* Typography & Layout */
+        .text-center { text-align: center; }
+        .bold { font-weight: bold; }
+        .underline { text-decoration: underline; }
+        .blue-text { color: #00509E; } /* Matching the blue from your screenshot */
+        
+        .sub-header { font-size: 11pt; margin-bottom: 5px; }
+        .course-info-row { display: flex; justify-content: space-between; font-size: 10pt; margin-top: 20px; margin-bottom: 20px; }
+        
+        .instructions-title { font-size: 10pt; margin-bottom: 10px; }
+        .instructions-text { font-size: 10pt; margin-bottom: 10px; }
+        .instructions-list { font-size: 10pt; margin-bottom: 20px; margin-left: -15px;}
+        
+        .logbook-title { font-size: 11pt; margin-bottom: 15px; }
+
+        /* Student Details (Blue) */
+        .student-details {
+            font-size: 10pt;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            font-size: 9pt;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+        .text-left { text-align: left; }
+        
+        /* Column Widths */
+        th:nth-child(1) { width: 5%; }
+        th:nth-child(2) { width: 10%; }
+        th:nth-child(3) { width: 8%; }
+        th:nth-child(4) { width: 8%; }
+        th:nth-child(5) { width: 10%; }
+        th:nth-child(6) { width: 35%; }
+        th:nth-child(7) { width: 12%; }
+        th:nth-child(8) { width: 12%; }
+
+        /* Footer Signatures */
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10pt;
+            margin-top: 60px;
+        }
+
+        /* Print Button */
+        .print-btn {
+            position: fixed; top: 20px; right: 20px; padding: 10px 20px; background: #E91E63; color: white; border: none; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* 🖨️ Print Styles */
+        @media print {
+            body { background: white; padding: 0; }
+            .page { box-shadow: none; margin: 0; padding: 15mm; width: 100%; }
+            .print-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Print</button>
+
+    <div class="page">
+        <div class="header-box">
+            <div class="logo-placeholder"><img src="pict-logo.jpg" alt="PICT" style="max-width: 100%; max-height: 100%;" onerror="this.style.display='none'"></div>
+            <div class="header-text">
+                <h1>SCTR’S PUNE INSTITUTE OF COMPUTER TECHNOLOGY, PUNE</h1>
+                <p>S.No.-27, Pune Satara Road, Dhankawadi, Pune-411043</p>
+            </div>
+        </div>
+
+        <div class="text-center bold sub-header">Department of Basic Sciences and Engineering (F. Y. B. Tech.)</div>
+        <div class="text-center bold underline sub-header">Co- Curricular Activity (CCA)</div>
+
+        <div class="course-info-row bold underline">
+            <div>AY: 2025-26, Semester-2</div>
+            <div>Course Code: F024 [CCA-2]</div>
+        </div>
+
+        <div class="text-center bold underline instructions-title">Instructions for the students:</div>
+        <div class="text-center bold instructions-text">This CCA course is 30 Hrs. / Semester duration with 01 Credit</div>
+        <ol class="instructions-list">
+            <li>Maintain Activity Logbook as per the format and submit it monthly to Teacher Guardian</li>
+        </ol>
+
+        <div class="text-center bold underline blue-text logbook-title">Activity Log book</div>
+
+        <div class="student-details blue-text bold">
+            <div id="printName">Name of the student: </div>
+            <div>Roll Number: </div>
+            <div>Activity: </div>
+            <div>Enrolment number: </div>
+            <div>Month: </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr class="blue-text bold">
+                    <th>Sr.<br>No.</th>
+                    <th>Date</th>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Total no.<br>of hours</th>
+                    <th>Activities/ work<br>carried out</th>
+                    <th>Students<br>Signature</th>
+                    <th>Activity<br>Mentor<br>Signature</th>
+                </tr>
+            </thead>
+            <tbody id="logbookTableBody">
+                </tbody>
+        </table>
+
+        <div class="signatures blue-text bold">
+            <div>Activity In charge Signature</div>
+            <div>Teacher Guardian Signature</div>
+        </div>
+    </div>
+
+    <script src="print-logbook.js"></script>
+</body>
+</html>
