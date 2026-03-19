@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         // 2. Fetch data from backend
-        const response = await fetch(`http://localhost:8080/students/${studentId}/activities`);
+        const response = await fetch(`https://clubtracker.onrender.com/students/${studentId}/activities`);
         
         if (response.ok) {
             const activities = await response.json();

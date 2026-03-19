@@ -24,7 +24,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     if (currentRole === 'student') {
         try {
             // 1. Send the data to the Spring Boot backend
-            const response = await fetch('http://localhost:8080/students/login', {
+            const response = await fetch('https://clubtracker.onrender.com/students/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

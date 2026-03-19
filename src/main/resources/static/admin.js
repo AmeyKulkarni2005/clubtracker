@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadDropdownData() {
     try {
         // Fetch Students
-        const studentRes = await fetch('http://localhost:8080/students/all');
+        const studentRes = await fetch('https://clubtracker.onrender.com/students/all');
         if (studentRes.ok) {
             const students = await studentRes.json();
             const studentSelect = document.getElementById('studentSelect');
@@ -25,7 +25,7 @@ async function loadDropdownData() {
         }
 
         // Fetch Activities
-        const activityRes = await fetch('http://localhost:8080/activities/all');
+        const activityRes = await fetch('https://clubtracker.onrender.com/activities/all');
         if (activityRes.ok) {
             const activities = await activityRes.json();
             const activitySelect = document.getElementById('activitySelect');
@@ -54,7 +54,7 @@ document.getElementById('createActivityForm').addEventListener('submit', async (
     };
 
     try {
-        const response = await fetch('http://localhost:8080/activities/add', {
+        const response = await fetch('https://clubtracker.onrender.com/activities/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(activityData)
@@ -80,7 +80,7 @@ document.getElementById('markAttendanceForm').addEventListener('submit', async (
     const activityId = document.getElementById('activitySelect').value;
 
     // Based on your Spring Boot controller, this uses URL parameters (@RequestParam)
-    const url = `http://localhost:8080/attendance/mark?studentId=${studentId}&activityId=${activityId}&present=true`;
+    const url = `https://clubtracker.onrender.com/attendance/mark?studentId=${studentId}&activityId=${activityId}&present=true`;
 
     try {
         const response = await fetch(url, { method: 'POST' });
@@ -113,7 +113,7 @@ document.getElementById('createStudentForm').addEventListener('submit', async (e
     };
 
     try {
-        const response = await fetch('http://localhost:8080/students/add', {
+        const response = await fetch('https://clubtracker.onrender.com/students/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(studentData)
@@ -174,7 +174,7 @@ document.getElementById('createMajorEventForm').addEventListener('submit', async
     formData.append("image", imageFile);
 
     try {
-        const response = await fetch('http://localhost:8080/events/add', {
+        const response = await fetch('https://clubtracker.onrender.com/events/add', {
             method: 'POST',
             body: formData // Notice: No headers are set here! The browser handles it.
         });

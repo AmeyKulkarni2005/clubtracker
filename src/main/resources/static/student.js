@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 3. Fetch the stats from your Spring Boot backend
     try {
-        const response = await fetch(`http://localhost:8080/students/${studentId}/hours`);
+        const response = await fetch(`https://clubtracker.onrender.com/students/${studentId}/hours`);
         
         if (response.ok) {
             const stats = await response.json();
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const credits = Math.floor(stats.totalHours / 30);
             document.getElementById('creditsEarned').innerText = credits;
             
-            const activitiesResponse = await fetch(`http://localhost:8080/students/${studentId}/activities`);
+            const activitiesResponse = await fetch(`https://clubtracker.onrender.com/students/${studentId}/activities`);
             
             if (activitiesResponse.ok) {
                 const activities = await activitiesResponse.json();
@@ -89,7 +89,7 @@ function switchTab(tabId, buttonElement) {
 // Function to fetch and display the Major Events
 async function loadMajorEvents() {
     try {
-        const response = await fetch('http://localhost:8080/events/all');
+        const response = await fetch('https://clubtracker.onrender.com/events/all');
         if (response.ok) {
             const events = await response.json();
             const container = document.getElementById('eventsContainer');
@@ -104,7 +104,7 @@ async function loadMajorEvents() {
                 // Notice how we point the image source directly to your Spring Boot server
                 const cardHtml = `
                     <div class="event-card">
-                        <img src="http://localhost:8080${event.imageUrl}" alt="${event.name}" class="event-image" onerror="this.src='https://via.placeholder.com/400x200?text=No+Image'">
+                        <img src="https://clubtracker.onrender.com${event.imageUrl}" alt="${event.name}" class="event-image" onerror="this.src='https://via.placeholder.com/400x200?text=No+Image'">
                         <div class="event-details">
                             <h3>${event.name}</h3>
                             <div class="event-meta">
@@ -153,7 +153,7 @@ document.getElementById('createStudentForm').addEventListener('submit', async (e
     };
 
     try {
-        const response = await fetch('http://localhost:8080/students/add', {
+        const response = await fetch('https://clubtracker.onrender.com/students/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(studentData)
