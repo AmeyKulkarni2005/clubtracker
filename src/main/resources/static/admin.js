@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDropdownData();
 });
 
+//https://clubtracker.onrender.com
+
 // Fetch all students and activities from Spring Boot
 async function loadDropdownData() {
     try {

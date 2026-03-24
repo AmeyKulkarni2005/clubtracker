@@ -104,7 +104,7 @@ async function loadMajorEvents() {
                 // Notice how we point the image source directly to your Spring Boot server
                 const cardHtml = `
                     <div class="event-card">
-                        <img src="https://clubtracker.onrender.com${event.imageUrl}" alt="${event.name}" class="event-image" onerror="this.src='https://via.placeholder.com/400x200?text=No+Image'">
+                        <img src="https://clubtracker.onrender.com${event.imageUrl}" alt="${event.name}" class="event-image" onerror="this.src='http://via.placeholder.com/400x200?text=No+Image'">
                         <div class="event-details">
                             <h3>${event.name}</h3>
                             <div class="event-meta">
@@ -143,31 +143,35 @@ async function loadMajorEvents() {
 }
 
 // 5. Handle 'Create Student' Form Submission
-document.getElementById('createStudentForm').addEventListener('submit', async (e) => {
-    e.preventDefault(); // <-- This stops the page from reloading!
-    
-    const studentData = {
-        name: document.getElementById('studentName').value,
-        email: document.getElementById('studentEmail').value,
-        password: document.getElementById('studentPassword').value
-    };
+const createForm = document.getElementById('createStudentForm');
 
-    try {
-        const response = await fetch('https://clubtracker.onrender.com/students/add', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(studentData)
-        });
+if (createForm) { // <--- THIS SAVES THE DAY
+    createForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); 
+        
+        const studentData = {
+            name: document.getElementById('studentName').value,
+            email: document.getElementById('studentEmail').value,
+            password: document.getElementById('studentPassword').value
+        };
 
-        if (response.ok) {
-            alert('Student account created successfully!');
-            document.getElementById('createStudentForm').reset();
-            loadDropdownData(); // Updates the attendance dropdown immediately
-        } else {
-            alert('Failed to create student.');
+        try {
+            const response = await fetch('https://clubtracker.onrender.com/students/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(studentData)
+            });
+
+            if (response.ok) {
+                alert('Student account created successfully!');
+                createForm.reset();
+                loadDropdownData(); 
+            } else {
+                alert('Failed to create student.');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Failed to connect to the server.');
         }
-    } catch (error) {
-        console.error(error);
-        alert('Failed to connect to the server.');
-    }
-});
+    });
+}
